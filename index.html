@@ -31,8 +31,9 @@
           <button class="map-control map-control--fill js-control is-active" data-fill="winner">Ganador</button>
           <button class="map-control map-control--fill js-control" data-fill="pp">PP</button>
           <button class="map-control map-control--fill js-control" data-fill="psoe">PSOE</button>
-          <button class="map-control map-control--fill js-control" data-fill="podemos">IU+Podemos+Comunes</button>
+          <button class="map-control map-control--fill js-control" data-fill="sumar">Sumar</button>
           <button class="map-control map-control--fill js-control" data-fill="vox">Vox</button>
+          <button class="map-control map-control--fill js-control" data-fill="bloques">Bloques</button>
         </div>
       </div>
     </div>
@@ -64,17 +65,17 @@
 
     const loadMap = () => {
       const isMobile = window.innerWidth < 900;
-      const map = new ElectionMap('pk.eyJ1Ijoic2FpZ2VzcCIsImEiOiJjaWZpZmR2c3gwMHhjdTZseWdoMTJyNDV1In0.w1sa0OerC-d2bELEaiWWSA', {
+      const map = new ElectionMap('pk.eyJ1IjoiZGF0YWlyYWh1YiIsImEiOiJjbGtlNHVuNWUxNDAzM2JvMHI1am9zZjJ3In0.14dtIIWziiK8xiXTZZH55g', {
         container: 'map-container',
         style: 'mapbox://styles/laur05/cli3c8vra00kw01qu7qf5d8v7?fresh=true',
-        source: 'mapbox://saigesp.elections20230528_adm7?fresh=true',
-        sourceLayer: 'elections20230528_adm7',
+        source: 'mapbox://datairahub.elections20230723_adm4?fresh=true',
+        sourceLayer: 'elections20230723_adm4',
         center: [-3.69, 39.89],
         zoom: isMobile ? 4.5 : 5,
         minZoom: isMobile ? 4.5 : 5,
-        initialSelect: 'winner2023',
-        hash: false,
-        scrollZoom: false,
+        initialSelect: 'winner2019',
+        hash: true,
+        scrollZoom: true,
         partyColors: window._partyColors,
       });
       mapLoaded = true;
@@ -92,7 +93,7 @@
     // Fallback if map has not been loaded
     setTimeout(() => {
       if (!mapLoaded) loadMap();
-    }, 4000)
+    }, 4000);
     
   </script>
 </body>
