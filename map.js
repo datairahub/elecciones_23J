@@ -8,7 +8,9 @@ class ElectionMap {
   legendScales = {};
   legendLabels = {};
   colorScales = {
-    PiGY: [-50, '#8e0152', -40, '#c51b7d', -30, '#de77ae', -20, '#f1b6da', -10, '#fde0ef', 0, '#f7f7f7', 10, '#e6f5d0', 20, '#b8e186', 30, '#7fbc41', 40, '#4d9221', 50, '#276419'],
+    PiGY:  [-50, '#8e0152', -40, '#c51b7d', -30, '#de77ae', -20, '#f1b6da', -10, '#fde0ef', 0, '#f7f7f7', 10, '#e6f5d0', 20, '#b8e186', 30, '#7fbc41', 40, '#4d9221', 50, '#276419'],
+    RdBu:  [-50, '#67001f', -40, '#b2182b', -30, '#d6604d', -20, '#f4a582', -10, '#fddbc7', 0, '#f7f7f7', 10, '#d1e5f0', 20, '#92c5de', 30, '#4393c3', 40, '#2166ac', 50, '#053061'],
+    // RdBu: [-99, '#67001f', -80, '#b2182b', -60, '#d6604d', -40, '#f4a582', -20, '#fddbc7', 0, '#f7f7f7', 20, '#d1e5f0', 40, '#92c5de', 60, '#4393c3', 80, '#2166ac', 99, '#053061'],
   }
   fillLayerFillOpacity = {
     winner2019: ['interpolate', ["linear", 1], ["get", "last_winner1_val"], 0, 0, 50, 0.9],
@@ -17,10 +19,10 @@ class ElectionMap {
     pp2023: ['interpolate', ['linear', 1], ['get', 'curr_PP'], 9.99, 0.05, 10, 0.2, 19.99, 0.2, 20, 0.4, 29.99, 0.4, 30, 0.6, 39.99, 0.6, 40, 0.8],
     psoe2019: ['interpolate', ['linear', 1], ['get', 'last_PSOE'], 9.99, 0.05, 10, 0.2, 19.99, 0.2, 20, 0.4, 29.99, 0.4, 30, 0.6, 39.99, 0.6, 40, 0.8],
     psoe2023: ['interpolate', ['linear', 1], ['get', 'curr_PSOE'], 9.99, 0.05, 10, 0.2, 19.99, 0.2, 20, 0.4, 29.99, 0.4, 30, 0.6, 39.99, 0.6, 40, 0.8],
-    sumar2019: ['interpolate', ['linear', 1], ['get', 'last_SUMAR'], 9.99, 0.05, 10, 0.4, 19.99, 0.4, 20, 0.6, 29.99, 0.6, 30, 0.8, 39.99, 0.8, 40, 0.9],
-    sumar2023: ['interpolate', ['linear', 1], ['get', 'curr_SUMAR'], 9.99, 0.05, 10, 0.4, 19.99, 0.4, 20, 0.6, 29.99, 0.6, 30, 0.8, 39.99, 0.8, 40, 0.9],
-    vox2019: ['interpolate', ['linear', 1], ['get', 'last_VOX'], 9.99, 0.05, 10, 0.4, 19.99, 0.4, 20, 0.6, 29.99, 0.6, 30, 0.8, 39.99, 0.8, 40, 0.9],
-    vox2023: ['interpolate', ['linear', 1], ['get', 'curr_VOX'], 9.99, 0.05, 10, 0.4, 19.99, 0.4, 20, 0.6, 29.99, 0.6, 30, 0.8, 39.99, 0.8, 40, 0.9],
+    sumar2019: ['interpolate', ['linear', 1], ['get', 'last_SUMAR'], 9.99, 0.05, 10, 0.2, 19.99, 0.2, 20, 0.4, 29.99, 0.4, 30, 0.6, 39.99, 0.6, 40, 0.8],
+    sumar2023: ['interpolate', ['linear', 1], ['get', 'curr_SUMAR'], 9.99, 0.05, 10, 0.2, 19.99, 0.2, 20, 0.4, 29.99, 0.4, 30, 0.6, 39.99, 0.6, 40, 0.8],
+    vox2019: ['interpolate', ['linear', 1], ['get', 'last_VOX'], 9.99, 0.05, 10, 0.2, 19.99, 0.2, 20, 0.4, 29.99, 0.4, 30, 0.6, 39.99, 0.6, 40, 0.8],
+    vox2023: ['interpolate', ['linear', 1], ['get', 'curr_VOX'], 9.99, 0.05, 10, 0.2, 19.99, 0.2, 20, 0.4, 29.99, 0.4, 30, 0.6, 39.99, 0.6, 40, 0.8],
   };
   fillLayerFilter = {
     winner2019: ['has', 'last_winner1_val'],
@@ -29,6 +31,9 @@ class ElectionMap {
     psoediff: ['has', 'diff_PSOE'],
     sumardiff: ['has', 'diff_SUMAR'],
     voxdiff: ['has', 'diff_VOX'],
+    bloques2019: ['has', 'last_block'],
+    bloques2023: ['has', 'curr_block'],
+    bloquesdiff: ['all', ['has', 'last_block'], ['has', 'curr_block']],
   };
   partyColors = {};
   initialCenter = null;
@@ -94,71 +99,139 @@ class ElectionMap {
 
   setLegendScales() {
     this.legendLabels = {
+      winnerdiff: 'Partido ganador',
       pp2019: 'Porcentaje de voto',
       pp2023: 'Porcentaje de voto',
+      ppdiff: 'Cambio en porcentaje de voto',
       psoe2019: 'Porcentaje de voto',
       psoe2023: 'Porcentaje de voto',
+      psoediff: 'Cambio en porcentaje de voto',
       sumar2019: 'Porcentaje de voto',
       sumar2023: 'Porcentaje de voto',
+      sumardiff: 'Cambio en porcentaje de voto',
       vox2019: 'Porcentaje de voto',
       vox2023: 'Porcentaje de voto',
+      voxdiff: 'Cambio en porcentaje de voto',
+      bloques2019: 'Porcentaje de voto a bloque',
+      bloques2023: 'Porcentaje de voto a bloque',
+      bloquesdiff: 'Cambio en porcentaje de voto a bloque',
     };
     this.legendScales = {
+      winnerdiff: [
+        {color: "#7fbc41", label: 'Mismo partido',},
+        {color: "#d6604d", label: 'Diferente partido',},
+      ],
       pp2019: [
-        {value: 0,  color: `${this.partyColors.PP}0d`, label: '0-10',},
-        {value: 10, color: `${this.partyColors.PP}33`, label: '10-20',},
-        {value: 20, color: `${this.partyColors.PP}66`, label: '20-30',},
-        {value: 30, color: `${this.partyColors.PP}99`, label: '30-40',},
-        {value: 40, color: `${this.partyColors.PP}cc`, label: '+40',},
+        {color: `${this.partyColors.PP}0d`, label: '0-10',},
+        {color: `${this.partyColors.PP}33`, label: '10-20',},
+        {color: `${this.partyColors.PP}66`, label: '20-30',},
+        {color: `${this.partyColors.PP}99`, label: '30-40',},
+        {color: `${this.partyColors.PP}cc`, label: '+40',},
       ],
       pp2023: [
-        {value: 0,  color: `${this.partyColors.PP}0d`, label: '0-10',},
-        {value: 10, color: `${this.partyColors.PP}33`, label: '10-20',},
-        {value: 20, color: `${this.partyColors.PP}66`, label: '20-30',},
-        {value: 30, color: `${this.partyColors.PP}99`, label: '30-40',},
-        {value: 40, color: `${this.partyColors.PP}cc`, label: '+40',},
+        {color: `${this.partyColors.PP}0d`, label: '0-10',},
+        {color: `${this.partyColors.PP}33`, label: '10-20',},
+        {color: `${this.partyColors.PP}66`, label: '20-30',},
+        {color: `${this.partyColors.PP}99`, label: '30-40',},
+        {color: `${this.partyColors.PP}cc`, label: '+40',},
+      ],
+      ppdiff: [
+        {color: this.colorScales.PiGY[1], label: '-50',},
+        {color: this.colorScales.PiGY[5], label: '-30',},
+        {color: this.colorScales.PiGY[9], label: '-10',},
+        {color: this.colorScales.PiGY[13], label: '+10',},
+        {color: this.colorScales.PiGY[17], label: '+30',},
+        {color: this.colorScales.PiGY[21], label: '+50',},
       ],
       psoe2019: [
-        {value: 0,  color: `${this.partyColors.PSOE}0d`, label: '0-10',},
-        {value: 10, color: `${this.partyColors.PSOE}33`, label: '10-20',},
-        {value: 20, color: `${this.partyColors.PSOE}66`, label: '20-30',},
-        {value: 30, color: `${this.partyColors.PSOE}99`, label: '30-40',},
-        {value: 40, color: `${this.partyColors.PSOE}cc`, label: '+40',},
+        {color: `${this.partyColors.PSOE}0d`, label: '0-10',},
+        {color: `${this.partyColors.PSOE}33`, label: '10-20',},
+        {color: `${this.partyColors.PSOE}66`, label: '20-30',},
+        {color: `${this.partyColors.PSOE}99`, label: '30-40',},
+        {color: `${this.partyColors.PSOE}cc`, label: '+40',},
       ],
       psoe2023: [
-        {value: 0,  color: `${this.partyColors.PSOE}0d`, label: '0-10',},
-        {value: 10, color: `${this.partyColors.PSOE}33`, label: '10-20',},
-        {value: 20, color: `${this.partyColors.PSOE}66`, label: '20-30',},
-        {value: 30, color: `${this.partyColors.PSOE}99`, label: '30-40',},
-        {value: 40, color: `${this.partyColors.PSOE}cc`, label: '+40',},
+        {color: `${this.partyColors.PSOE}0d`, label: '0-10',},
+        {color: `${this.partyColors.PSOE}33`, label: '10-20',},
+        {color: `${this.partyColors.PSOE}66`, label: '20-30',},
+        {color: `${this.partyColors.PSOE}99`, label: '30-40',},
+        {color: `${this.partyColors.PSOE}cc`, label: '+40',},
+      ],
+      psoediff: [
+        {color: this.colorScales.PiGY[1], label: '-50',},
+        {color: this.colorScales.PiGY[5], label: '-30',},
+        {color: this.colorScales.PiGY[9], label: '-10',},
+        {color: this.colorScales.PiGY[13], label: '+10',},
+        {color: this.colorScales.PiGY[17], label: '+30',},
+        {color: this.colorScales.PiGY[21], label: '+50',},
       ],
       sumar2019: [
-        {value: 0,  color: `${this.partyColors.SUMAR}0d`, label: '0-10',},
-        {value: 10, color: `${this.partyColors.SUMAR}66`, label: '10-20',},
-        {value: 20, color: `${this.partyColors.SUMAR}99`, label: '20-30',},
-        {value: 30, color: `${this.partyColors.SUMAR}cc`, label: '30-40',},
-        {value: 40, color: `${this.partyColors.SUMAR}e6`, label: '+40',},
+        {color: `${this.partyColors.SUMAR}0d`, label: '0-10',},
+        {color: `${this.partyColors.SUMAR}33`, label: '10-20',},
+        {color: `${this.partyColors.SUMAR}66`, label: '20-30',},
+        {color: `${this.partyColors.SUMAR}99`, label: '30-40',},
+        {color: `${this.partyColors.SUMAR}cc`, label: '+40',},
       ],
       sumar2023: [
-        {value: 0,  color: `${this.partyColors.SUMAR}0d`, label: '0-10',},
-        {value: 10, color: `${this.partyColors.SUMAR}66`, label: '10-20',},
-        {value: 20, color: `${this.partyColors.SUMAR}99`, label: '20-30',},
-        {value: 30, color: `${this.partyColors.SUMAR}cc`, label: '30-40',},
-        {value: 40, color: `${this.partyColors.SUMAR}e6`, label: '+40',},
+        {color: `${this.partyColors.SUMAR}0d`, label: '0-10',},
+        {color: `${this.partyColors.SUMAR}33`, label: '10-20',},
+        {color: `${this.partyColors.SUMAR}66`, label: '20-30',},
+        {color: `${this.partyColors.SUMAR}99`, label: '30-40',},
+        {color: `${this.partyColors.SUMAR}cc`, label: '+40',},
+      ],
+      sumardiff: [
+        {color: this.colorScales.PiGY[1], label: '-50',},
+        {color: this.colorScales.PiGY[5], label: '-30',},
+        {color: this.colorScales.PiGY[9], label: '-10',},
+        {color: this.colorScales.PiGY[13], label: '+10',},
+        {color: this.colorScales.PiGY[17], label: '+30',},
+        {color: this.colorScales.PiGY[21], label: '+50',},
       ],
       vox2019: [
-        {value: 0,  color: `${this.partyColors.VOX}0d`, label: '0-10',},
-        {value: 10, color: `${this.partyColors.VOX}66`, label: '10-20',},
-        {value: 20, color: `${this.partyColors.VOX}99`, label: '20-30',},
-        {value: 30, color: `${this.partyColors.VOX}cc`, label: '30-40',},
-        {value: 40, color: `${this.partyColors.VOX}e6`, label: '+40',},
+        {color: `${this.partyColors.VOX}0d`, label: '0-10',},
+        {color: `${this.partyColors.VOX}33`, label: '10-20',},
+        {color: `${this.partyColors.VOX}66`, label: '20-30',},
+        {color: `${this.partyColors.VOX}99`, label: '30-40',},
+        {color: `${this.partyColors.VOX}cc`, label: '+40',},
       ],
       vox2023: [
-        {value: 0,  color: `${this.partyColors.VOX}0d`, label: '0-10',},
-        {value: 10, color: `${this.partyColors.VOX}66`, label: '10-20',},
-        {value: 20, color: `${this.partyColors.VOX}99`, label: '20-30',},
-        {value: 30, color: `${this.partyColors.VOX}cc`, label: '30-40',},
-        {value: 40, color: `${this.partyColors.VOX}e6`, label: '+40',},
+        {color: `${this.partyColors.VOX}0d`, label: '0-10',},
+        {color: `${this.partyColors.VOX}33`, label: '10-20',},
+        {color: `${this.partyColors.VOX}66`, label: '20-30',},
+        {color: `${this.partyColors.VOX}99`, label: '30-40',},
+        {color: `${this.partyColors.VOX}cc`, label: '+40',},
+      ],
+      voxdiff: [
+        {color: this.colorScales.PiGY[1], label: '-50',},
+        {color: this.colorScales.PiGY[5], label: '-30',},
+        {color: this.colorScales.PiGY[9], label: '-10',},
+        {color: this.colorScales.PiGY[13], label: '+10',},
+        {color: this.colorScales.PiGY[17], label: '+30',},
+        {color: this.colorScales.PiGY[21], label: '+50',},
+      ],
+      bloques2019: [
+        {color: this.colorScales.RdBu[1], label: '+50 izq',},
+        {color: this.colorScales.RdBu[5], label: '+30',},
+        {color: this.colorScales.RdBu[9], label: '+10',},
+        {color: this.colorScales.RdBu[13], label: '+10',},
+        {color: this.colorScales.RdBu[17], label: '+30',},
+        {color: this.colorScales.RdBu[21], label: '+50 der',},
+      ],
+      bloques2023: [
+        {color: this.colorScales.RdBu[1], label: '+50 izq',},
+        {color: this.colorScales.RdBu[5], label: '+30',},
+        {color: this.colorScales.RdBu[9], label: '+10',},
+        {color: this.colorScales.RdBu[13], label: '+10',},
+        {color: this.colorScales.RdBu[17], label: '+30',},
+        {color: this.colorScales.RdBu[21], label: '+50 der',},
+      ],
+      bloquesdiff: [
+        {color: this.colorScales.RdBu[1], label: '+50 izq',},
+        {color: this.colorScales.RdBu[5], label: '+30',},
+        {color: this.colorScales.RdBu[9], label: '+10',},
+        {color: this.colorScales.RdBu[13], label: '+10',},
+        {color: this.colorScales.RdBu[17], label: '+30',},
+        {color: this.colorScales.RdBu[21], label: '+50 der',},
       ],
     };
   }
@@ -173,7 +246,7 @@ class ElectionMap {
         ...Object.entries(this.partyColors).flat(),
         "#999"
       ],
-      winnerdiff: ["match", ["get", "diff_winner1"], 1, "#7fbc41", "#F7F7F7"],
+      winnerdiff: ["case", ["==", ["get", "last_winner1_key"], ["get", "curr_winner1_key"]], "#7fbc41", "#d6604d"],
       pp2019: ["case", ["has", "last_PP"], this.partyColors.PP, "#F7F7F7"],
       pp2023: ["case", ["has", "curr_PP"], this.partyColors.PP, "#F7F7F7"],
       ppdiff: ['interpolate', ['linear', 1], ['get', 'diff_PP'], ...this.colorScales.PiGY],
@@ -186,6 +259,9 @@ class ElectionMap {
       vox2019: ["case", ["has", "last_VOX"], this.partyColors.VOX, "#F7F7F7"],
       vox2023: ["case", ["has", "curr_VOX"], this.partyColors.VOX, "#F7F7F7"],
       voxdiff: ['interpolate', ['linear', 1], ['get', 'diff_VOX'], ...this.colorScales.PiGY],
+      bloques2019: ['interpolate', ['linear', 1], ['get', 'last_block'], ...this.colorScales.RdBu],
+      bloques2023: ['interpolate', ['linear', 1], ['get', 'curr_block'], ...this.colorScales.RdBu],
+      bloquesdiff: ['interpolate', ['linear', 1], ["-", ['get', 'curr_block'], ['get', 'last_block']], ...this.colorScales.RdBu],
     };
   }
 
@@ -343,13 +419,13 @@ class ElectionMap {
           </tr>
           <tr>
             <td>Votos en blanco</td>
-            <td class="cr">${section.last_votes_white}</td>
-            <td class="cr">${section.curr_votes_white}</td>
+            <td class="cr">${section.last_votes_white === undefined ? '?' : section.last_votes_white}</td>
+            <td class="cr">${section.curr_votes_white === undefined ? '?' : section.curr_votes_white}</td>
           </tr>
           <tr>
             <td>Votos nulos</td>
-            <td class="cr">${section.last_votes_null}</td>
-            <td class="cr">${section.curr_votes_null}</td>
+            <td class="cr">${section.last_votes_null === undefined ? '?' : section.last_votes_null}</td>
+            <td class="cr">${section.curr_votes_null === undefined ? '?' : section.curr_votes_null}</td>
           </tr>
         </tbody>
       </table>
