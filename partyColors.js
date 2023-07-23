@@ -5,6 +5,7 @@ window._partyColors = {
     "PP": "#02a2dd", // #17589D
     "VOX": "#7CBD2A",
     "CS": "#ea8046",
+    "JXCAT": "#20C0B2",
     "JXCATJUNTS": "#20C0B2",
     "ERC": "#FFB232",
     "CUP": "#FEED14",
