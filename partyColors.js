@@ -12,6 +12,7 @@ window._partyColors = {
     "PAR": "#fea000",
     "NA+": "#1c699C",
     "GBAI": "#F75E42",
+    "GEROABAI": "#F75E42",
     "PNV": "#16823b", // #00902F
     "BILDU": "#c7d892", // #08A3A6
     "EHBILDU": "#c7d892", // #08A3A6
