@@ -13,6 +13,7 @@ window._partyColors = {
     "NA+": "#1c699C",
     "GBAI": "#F75E42",
     "PNV": "#16823b", // #00902F
+    "BILDU": "#c7d892", // #08A3A6
     "EHBILDU": "#c7d892", // #08A3A6
     "PRC": "#C2CE0A",
     "FORO": "#17375e",
