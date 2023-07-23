@@ -60,6 +60,10 @@ table {
     font-style: normal;
 }
 
+html, body {
+    height: 100%;
+}
+
 /* Utils */
 .hidden {
     display: none;
@@ -67,9 +71,14 @@ table {
 
 /* Map wrapper */
 .map-wrapper {
+    height: 100%;
     position: relative;
     overflow: hidden;
     font-family: 'Roboto', sans-serif;
+}
+
+#map-container {
+    height: 100%;
 }
 
 /* Map overflow */
