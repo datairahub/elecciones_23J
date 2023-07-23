@@ -24,6 +24,7 @@ window._partyColors = {
     "PACMA": "#00FF7F",
     "TERUELEXISTE": "#007F51",
     "PUMJ": "#F9CB9C",
+    "UPN": "#E51A22",
     
     "PCTE": "#E3061A",
     "EXISTE": "#007F51",
